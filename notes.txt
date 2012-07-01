@@ -1,0 +1,16 @@
+
+Bah bha bolla ...
+
+  $$
+  a = 1 ,  \int_0^1 f(x) \, dx
+  $$
+
+  \begin{equation} \label{here}
+  \int_0^1 f(x) \, dx
+  \end{equation}
+
+And inline Latex: $a=1$, etc ...
+
+And, now the reference : \ref{here} ... \eqref{here} ...
+
+
