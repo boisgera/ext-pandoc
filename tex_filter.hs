@@ -20,11 +20,16 @@ convert_raw_inline other = other
 --
 --     <script type="text/x-mathjax-config">
 --     MathJax.Hub.Config({
---      MMLorHTML: { prefer: { Firefox: "HTML" } }
+--       TeX: { equationNumbers: { autoNumber: "AMS" } }
 --     });
+--     </script>
+--     <script 
+--       type="text/javascript"
+--       src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 --     </script>
 --
 -- try with tagsoup ? http://hackage.haskell.org/packages/archive/tagsoup/latest/doc/html/Text-HTML-TagSoup.html
+-- 
 main = do
     input <- getContents
     let output = (encodeJSON . (apply convert_raw_block) . (apply convert_raw_inline) . decodeJSON) input
