@@ -3,22 +3,21 @@
 import System.IO
 import Text.HTML.TagSoup
 
-removeScript :: [Tag String] -> [Tag String]
-removeScript tags = case tags of
-    (TagOpen "script" _):_tags -> removeScript _tags
-    (TagClose "script"):_tags  -> removeScript _tags
-    (other:_tags)              -> other:(removeScript _tags)
-    []                         -> []
+isTag :: String -> Tag String -> Bool
+isTag name tag = (isTagOpenName name tag) || (isTagCloseName name tag)
 
-insert :: [Tag String] -> [Tag String] -> [Tag String]
-insert elts tags = case tags of
+removeTag :: String -> [Tag String] -> [Tag String]
+removeTag name = filter (\tag -> not (isTag name tag))
+
+insertTags :: [Tag String] -> [Tag String] -> [Tag String]
+insertTags elts tags = case tags of
      (TagOpen "head" attrs):_tags -> (TagOpen "head" attrs):elts ++ _tags
-     tag:_tags                    -> tag:(insert elts _tags)
+     tag:_tags                    -> tag:(insertTags elts _tags)
      _                            -> []
 
 main = do
     mathjax <- readFile "mathjax.html"
     let scripts = parseTags mathjax
     html <- getContents
-    let tags = (insert scripts . removeScript . parseTags) html
+    let tags = (insertTags scripts . removeTag "script" . parseTags) html
     putStr (renderTags tags)
