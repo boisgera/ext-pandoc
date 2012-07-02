@@ -6,7 +6,7 @@ endif
 all: notes.tex notes.html notes.json
 
 notes.html: notes.txt
-	pandoc notes.txt -s -t json | ./tex_filter.hs | pandoc -f json --mathjax -s -o notes.html
+	pandoc notes.txt -s -t json | ./tex_filter.hs | pandoc -f json --mathjax -s -t html | ./patch_html.hs > notes.html 
 
 notes.pdf: notes.tex
 	pdflatex notes.tex
@@ -28,5 +28,5 @@ new: clean all
 
 .PHONY: edit
 edit:
-	@$(EDITOR) tex_filter.hs notes.txt Makefile &
+	@$(EDITOR) tex_filter.hs patch_html.hs notes.txt Makefile &
 
